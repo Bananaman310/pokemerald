@@ -2864,7 +2864,7 @@ static const u8 sMonAnimationDelayTable[NUM_SPECIES - 1] =
 #define PP_UP_SHIFTS_INV(val) (u8)~(val), (u8)~((val) << 2), (u8)~((val) << 4), (u8)~((val) << 6)
 
 // PP Up bonuses are stored for a Pokémon as a single byte.
-// There are 2 bits (a value 0-3) for each move slot that 
+// There are 2 bits (a value 0-3) for each move slot that
 // represent how many PP Ups have been applied.
 // The following arrays take a move slot id and return:
 // gPPUpGetMask - A mask to get the number of PP Ups applied to that move slot
@@ -3186,6 +3186,7 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, 
     u8 speciesName[POKEMON_NAME_LENGTH + 1];
     u32 personality;
     u32 value;
+    int active_iv_max;
     u16 checksum;
 
     ZeroBoxMonData(boxMon);
@@ -3216,7 +3217,7 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, 
               | (gSaveBlock2Ptr->playerTrainerId[1] << 8)
               | (gSaveBlock2Ptr->playerTrainerId[2] << 16)
               | (gSaveBlock2Ptr->playerTrainerId[3] << 24);
-        
+
         if (CheckBagHasItem(ITEM_SHINY_CHARM, 1))
         {
             u32 shinyValue;
@@ -3265,20 +3266,32 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, 
         u32 iv;
         value = Random();
 
-        iv = value & MAX_IV_MASK;
+        if(FlagGet(FLAG_BREED_LEVEL_2))
+        {
+          active_iv_max = MAX_IV_BREED_LEVEL2;
+        }
+        else if (FlagGet(FLAG_BREED_LEVEL_3)){
+          active_iv_max = MAX_IV_BREED_LEVEL3;
+        }
+        else
+        {
+          active_iv_max = MAX_IV_BREED_LEVEL1;
+        }
+
+        iv = value & active_iv_max;
         SetBoxMonData(boxMon, MON_DATA_HP_IV, &iv);
-        iv = (value & (MAX_IV_MASK << 5)) >> 5;
+        iv = (value & (active_iv_max << 5)) >> 5;
         SetBoxMonData(boxMon, MON_DATA_ATK_IV, &iv);
-        iv = (value & (MAX_IV_MASK << 10)) >> 10;
+        iv = (value & (active_iv_max << 10)) >> 10;
         SetBoxMonData(boxMon, MON_DATA_DEF_IV, &iv);
 
         value = Random();
 
-        iv = value & MAX_IV_MASK;
+        iv = value & active_iv_max;
         SetBoxMonData(boxMon, MON_DATA_SPEED_IV, &iv);
-        iv = (value & (MAX_IV_MASK << 5)) >> 5;
+        iv = (value & (active_iv_max << 5)) >> 5;
         SetBoxMonData(boxMon, MON_DATA_SPATK_IV, &iv);
-        iv = (value & (MAX_IV_MASK << 10)) >> 10;
+        iv = (value & (active_iv_max << 10)) >> 10;
         SetBoxMonData(boxMon, MON_DATA_SPDEF_IV, &iv);
     }
 
@@ -5156,7 +5169,7 @@ u16 GetAbilityBySpecies(u16 species, u8 abilityNum)
         gLastUsedAbility = gBaseStats[species].abilities[abilityNum];
     else
         gLastUsedAbility = ABILITY_NONE;
-    
+
     if (abilityNum >= NUM_NORMAL_ABILITY_SLOTS) // if abilityNum is empty hidden ability, look for other hidden abilities
     {
         for (i = NUM_NORMAL_ABILITY_SLOTS; i < NUM_ABILITY_SLOTS && gLastUsedAbility == ABILITY_NONE; i++)
@@ -5164,12 +5177,12 @@ u16 GetAbilityBySpecies(u16 species, u8 abilityNum)
             gLastUsedAbility = gBaseStats[species].abilities[i];
         }
     }
-    
+
     for (i = 0; i < NUM_ABILITY_SLOTS && gLastUsedAbility == ABILITY_NONE; i++) // look for any non-empty ability
     {
         gLastUsedAbility = gBaseStats[species].abilities[i];
     }
-    
+
     return gLastUsedAbility;
 }
 
@@ -5994,7 +6007,7 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mov
                     case 4: // ITEM5_PP_MAX
                         dataUnsigned = (GetMonData(mon, MON_DATA_PP_BONUSES, NULL) & gPPUpGetMask[moveIndex]) >> (moveIndex * 2);
                         temp2 = CalculatePPWithBonus(GetMonData(mon, MON_DATA_MOVE1 + moveIndex, NULL), GetMonData(mon, MON_DATA_PP_BONUSES, NULL), moveIndex);
-                        
+
                         // Check if 3 PP Ups have been applied already, and that the move has a total PP of at least 5 (excludes Sketch)
                         if (dataUnsigned < 3 && temp2 >= 5)
                         {
@@ -6648,21 +6661,18 @@ u16 HoennToNationalOrder(u16 hoennNum)
     Spinda has 4 spots, each with an entry in gSpindaSpotGraphics. Each entry contains
     a base x and y coordinate for the spot and a 16x16 binary image. Each bit in the image
     determines whether that pixel should be considered part of the spot.
-
     The position of each spot is randomized using the Spinda's personality. The entire 32 bit
     personality value is used, 4 bits for each coordinate of the 4 spots. If the personality
     value is 0x87654321, then 0x1 will be used for the 1st spot's x coord, 0x2 will be used for
     the 1st spot's y coord, 0x3 will be used for the 2nd spot's x coord, and so on. Each
     coordinate is calculated as (baseCoord + (given 4 bits of personality) - 8). In effect this
     means each spot can start at any position -8 to +7 off of its base coordinates (256 possibilities).
-
     The macro then loops over the 16x16 spot image. For each bit in the spot's binary image, if
     the bit is set then it's part of the spot; try to draw it. A pixel is drawn on Spinda if the
     pixel on Spinda satisfies the following formula: ((u8)(colorIndex - 1) <= 2). The -1 excludes
     transparent pixels, as these are index 0. Therefore only colors 1, 2, or 3 on Spinda will
     allow a spot to be drawn. These color indexes are Spinda's light brown body colors. To create
     the spot it adds 4 to the color index, so Spinda's spots will be colors 5, 6, and 7.
-
     The above is done two different ways in the macro: one with << 4, and one without. This
     is because Spinda's sprite is a 4 bits per pixel image, but the pointer to Spinda's pixels
     (destPixels) is an 8 bit pointer, so it addresses two pixels. Shifting by 4 accesses the 2nd
@@ -7950,7 +7960,7 @@ static bool8 ShouldSkipFriendshipChange(void)
 // Only the 'default' mode (MON_SPR_GFX_MODE_NORMAL) is used, which is set
 // up to allocate 4 sprites using the battler sprite templates (gBattlerSpriteTemplates).
 // MON_SPR_GFX_MODE_BATTLE is identical but never used.
-// MON_SPR_GFX_MODE_FULL_PARTY is set up to allocate 7 sprites (party + trainer?) 
+// MON_SPR_GFX_MODE_FULL_PARTY is set up to allocate 7 sprites (party + trainer?)
 // using a generic 64x64 template, and is also never used.
 
 // Between the unnecessarily large sizes below, a mistake allocating the spritePointers
@@ -8012,7 +8022,7 @@ struct MonSpritesGfxManager *CreateMonSpritesGfxManager(u8 managerId, u8 mode)
         gfx->dataSize = 1;
         gfx->mode = MON_SPR_GFX_MODE_FULL_PARTY;
         break;
- // case MON_SPR_GFX_MODE_BATTLE:       
+ // case MON_SPR_GFX_MODE_BATTLE:
     case MON_SPR_GFX_MODE_NORMAL:
     default:
         gfx->numSprites = MAX_BATTLERS_COUNT;
@@ -8151,13 +8161,13 @@ u8 GetFormIdFromFormSpeciesId(u16 formSpeciesId)
     return targetFormId;
 }
 
-u16 GetFormChangeTargetSpecies(struct Pokemon *mon, u16 method, u32 arg) 
+u16 GetFormChangeTargetSpecies(struct Pokemon *mon, u16 method, u32 arg)
 {
     return GetFormChangeTargetSpeciesBoxMon(&mon->box, method, arg);
 }
 
 // Returns SPECIES_NONE if no form change is possible
-u16 GetFormChangeTargetSpeciesBoxMon(struct BoxPokemon *mon, u16 method, u32 arg) 
+u16 GetFormChangeTargetSpeciesBoxMon(struct BoxPokemon *mon, u16 method, u32 arg)
 {
     u32 i;
     u16 targetSpecies = SPECIES_NONE;
