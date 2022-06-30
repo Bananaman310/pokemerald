@@ -284,11 +284,11 @@ void ResetTrainerHillResults(void)
 {
     s32 i;
 
-    gSaveBlock2Ptr->frontier.savedGame = 0;
-    gSaveBlock2Ptr->frontier.unk_EF9 = 0;
-    gSaveBlock1Ptr->trainerHill.bestTime = 0;
-    for (i = 0; i < 4; i++)
-        SetTimerValue(&gSaveBlock1Ptr->trainerHillTimes[i], HILL_MAX_TIME);
+   // gSaveBlock2Ptr->frontier.savedGame = 0;
+    //gSaveBlock2Ptr->frontier.unk_EF9 = 0;
+    //gSaveBlock1Ptr->trainerHill.bestTime = 0;
+  //  for (i = 0; i < 4; i++)
+       // SetTimerValue(&gSaveBlock1Ptr->trainerHillTimes[i], HILL_MAX_TIME);
 }
 
 static u8 GetFloorId(void)
@@ -339,7 +339,7 @@ void InitTrainerHillBattleStruct(void)
         }
         sRoomTrainers->facilityClass[i] = sHillData->floors[sHillData->floorId].trainers[i].facilityClass;
     }
-    SetTrainerHillVBlankCounter(&gSaveBlock1Ptr->trainerHill.timer);
+    //SetTrainerHillVBlankCounter(&gSaveBlock1Ptr->trainerHill.timer);
     FreeDataStruct();
 }
 
@@ -351,13 +351,13 @@ void FreeTrainerHillBattleStruct(void)
 
 static void SetUpDataStruct(void)
 {
-    if (sHillData == NULL)
-    {
-        sHillData = AllocZeroed(sizeof(*sHillData));
-        sHillData->floorId = gMapHeader.mapLayoutId - LAYOUT_TRAINER_HILL_1F;
-        CpuCopy32(sDataPerTag[gSaveBlock1Ptr->trainerHill.tag], &sHillData->tag, sizeof(sHillData->tag) + 4 * sizeof(struct TrHillFloor));
-        TrainerHillDummy();
-    }
+    // if (sHillData == NULL)
+    // {
+    //     sHillData = AllocZeroed(sizeof(*sHillData));
+    //     sHillData->floorId = gMapHeader.mapLayoutId - LAYOUT_TRAINER_HILL_1F;
+    //     CpuCopy32(sDataPerTag[gSaveBlock1Ptr->trainerHill.tag], &sHillData->tag, sizeof(sHillData->tag) + 4 * sizeof(struct TrHillFloor));
+    //     TrainerHillDummy();
+    // }
 }
 
 static void FreeDataStruct(void)
@@ -395,132 +395,132 @@ void CopyTrainerHillTrainerText(u8 which, u16 trainerId)
 
 static void TrainerHillStartChallenge(void)
 {
-    TrainerHillDummy();
-    if (!ReadTrainerHillAndValidate())
-        gSaveBlock1Ptr->trainerHill.field_3D6E_0f = 1;
-    else
-        gSaveBlock1Ptr->trainerHill.field_3D6E_0f = 0;
+    // TrainerHillDummy();
+    // if (!ReadTrainerHillAndValidate())
+    //     gSaveBlock1Ptr->trainerHill.field_3D6E_0f = 1;
+    // else
+    //     gSaveBlock1Ptr->trainerHill.field_3D6E_0f = 0;
 
-    gSaveBlock1Ptr->trainerHill.unk_3D6C = 0;
-    SetTrainerHillVBlankCounter(&gSaveBlock1Ptr->trainerHill.timer);
-    gSaveBlock1Ptr->trainerHill.timer = 0;
-    gSaveBlock1Ptr->trainerHill.spokeToOwner = 0;
-    gSaveBlock1Ptr->trainerHill.checkedFinalTime = 0;
-    gSaveBlock1Ptr->trainerHill.maybeECardScanDuringChallenge = 0;
-    gSaveBlock2Ptr->frontier.trainerFlags = 0;
-    gBattleOutcome = 0;
-    gSaveBlock1Ptr->trainerHill.receivedPrize = 0;
+    // gSaveBlock1Ptr->trainerHill.unk_3D6C = 0;
+    // SetTrainerHillVBlankCounter(&gSaveBlock1Ptr->trainerHill.timer);
+    // gSaveBlock1Ptr->trainerHill.timer = 0;
+    // gSaveBlock1Ptr->trainerHill.spokeToOwner = 0;
+    // gSaveBlock1Ptr->trainerHill.checkedFinalTime = 0;
+    // gSaveBlock1Ptr->trainerHill.maybeECardScanDuringChallenge = 0;
+    // gSaveBlock2Ptr->frontier.trainerFlags = 0;
+    // gBattleOutcome = 0;
+    // gSaveBlock1Ptr->trainerHill.receivedPrize = 0;
 }
 
 static void GetOwnerState(void)
 {
-    ClearTrainerHillVBlankCounter();
-    gSpecialVar_Result = 0;
-    if (gSaveBlock1Ptr->trainerHill.spokeToOwner)
-        gSpecialVar_Result++;
-    if (gSaveBlock1Ptr->trainerHill.receivedPrize && gSaveBlock1Ptr->trainerHill.checkedFinalTime)
-        gSpecialVar_Result++;
+    // ClearTrainerHillVBlankCounter();
+    // gSpecialVar_Result = 0;
+    // if (gSaveBlock1Ptr->trainerHill.spokeToOwner)
+    //     gSpecialVar_Result++;
+    // if (gSaveBlock1Ptr->trainerHill.receivedPrize && gSaveBlock1Ptr->trainerHill.checkedFinalTime)
+    //     gSpecialVar_Result++;
 
-    gSaveBlock1Ptr->trainerHill.spokeToOwner = TRUE;
+    // gSaveBlock1Ptr->trainerHill.spokeToOwner = TRUE;
 }
 
 static void GiveChallengePrize(void)
 {
-    u16 itemId = GetPrizeItemId();
+    // u16 itemId = GetPrizeItemId();
 
-    if (sHillData->tag.numFloors != NUM_TRAINER_HILL_FLOORS || gSaveBlock1Ptr->trainerHill.receivedPrize)
-    {
-        gSpecialVar_Result = 2;
-    }
-    else if (AddBagItem(itemId, 1) == TRUE)
-    {
-        CopyItemName(itemId, gStringVar2);
-        gSaveBlock1Ptr->trainerHill.receivedPrize = TRUE;
-        gSaveBlock2Ptr->frontier.unk_EF9 = 0;
-        gSpecialVar_Result = 0;
-    }
-    else
-    {
-        gSpecialVar_Result = 1;
-    }
+    // if (sHillData->tag.numFloors != NUM_TRAINER_HILL_FLOORS || gSaveBlock1Ptr->trainerHill.receivedPrize)
+    // {
+    //     gSpecialVar_Result = 2;
+    // }
+    // else if (AddBagItem(itemId, 1) == TRUE)
+    // {
+    //     CopyItemName(itemId, gStringVar2);
+    //     gSaveBlock1Ptr->trainerHill.receivedPrize = TRUE;
+    //     gSaveBlock2Ptr->frontier.unk_EF9 = 0;
+    //     gSpecialVar_Result = 0;
+    // }
+    // else
+    // {
+    //     gSpecialVar_Result = 1;
+    // }
 }
 
 // If bestTime > timer, the challenge was completed faster and its a new record
 // Otherwise the owner says it was a slow time and to complete it faster next time
 static void CheckFinalTime(void)
 {
-    if (gSaveBlock1Ptr->trainerHill.checkedFinalTime)
-    {
-        gSpecialVar_Result = 2;
-    }
-    else if (GetTimerValue(&gSaveBlock1Ptr->trainerHill.bestTime) > gSaveBlock1Ptr->trainerHill.timer)
-    {
-        SetTimerValue(&gSaveBlock1Ptr->trainerHill.bestTime, gSaveBlock1Ptr->trainerHill.timer);
-        gSaveBlock1Ptr->trainerHillTimes[gSaveBlock1Ptr->trainerHill.tag] = gSaveBlock1Ptr->trainerHill.bestTime;
-        gSpecialVar_Result = 0;
-    }
-    else
-    {
-        gSpecialVar_Result = 1;
-    }
+    // if (gSaveBlock1Ptr->trainerHill.checkedFinalTime)
+    // {
+    //     gSpecialVar_Result = 2;
+    // }
+    // else if (GetTimerValue(&gSaveBlock1Ptr->trainerHill.bestTime) > gSaveBlock1Ptr->trainerHill.timer)
+    // {
+    //     SetTimerValue(&gSaveBlock1Ptr->trainerHill.bestTime, gSaveBlock1Ptr->trainerHill.timer);
+    //     gSaveBlock1Ptr->trainerHillTimes[gSaveBlock1Ptr->trainerHill.tag] = gSaveBlock1Ptr->trainerHill.bestTime;
+    //     gSpecialVar_Result = 0;
+    // }
+    // else
+    // {
+    //     gSpecialVar_Result = 1;
+    // }
 
-    gSaveBlock1Ptr->trainerHill.checkedFinalTime = TRUE;
+    // gSaveBlock1Ptr->trainerHill.checkedFinalTime = TRUE;
 }
 
 static void TrainerHillResumeTimer(void)
 {
-    if (!gSaveBlock1Ptr->trainerHill.spokeToOwner)
-    {
-        if (gSaveBlock1Ptr->trainerHill.timer >= HILL_MAX_TIME)
-            gSaveBlock1Ptr->trainerHill.timer = HILL_MAX_TIME;
-        else
-            SetTrainerHillVBlankCounter(&gSaveBlock1Ptr->trainerHill.timer);
-    }
+    // if (!gSaveBlock1Ptr->trainerHill.spokeToOwner)
+    // {
+    //     if (gSaveBlock1Ptr->trainerHill.timer >= HILL_MAX_TIME)
+    //         gSaveBlock1Ptr->trainerHill.timer = HILL_MAX_TIME;
+    //     else
+    //         SetTrainerHillVBlankCounter(&gSaveBlock1Ptr->trainerHill.timer);
+    // }
 }
 
 static void TrainerHillSetPlayerLost(void)
 {
-    gSaveBlock1Ptr->trainerHill.hasLost = TRUE;
+   // gSaveBlock1Ptr->trainerHill.hasLost = TRUE;
 }
 
 static void TrainerHillGetChallengeStatus(void)
 {
-    if (gSaveBlock1Ptr->trainerHill.hasLost)
-    {
-        // The player lost their last match.
-        gSaveBlock1Ptr->trainerHill.hasLost = FALSE;
-        gSpecialVar_Result = TRAINER_HILL_PLAYER_STATUS_LOST;
-    }
-    else if (gSaveBlock1Ptr->trainerHill.maybeECardScanDuringChallenge)
-    {
-        // Unreachable code. Something relating to eCards?
-        gSaveBlock1Ptr->trainerHill.maybeECardScanDuringChallenge = 0;
-        gSpecialVar_Result = TRAINER_HILL_PLAYER_STATUS_ECARD_SCANNED;
-    }
-    else
-    {
-        // Continue playing.
-        gSpecialVar_Result = TRAINER_HILL_PLAYER_STATUS_NORMAL;
-    }
+    // if (gSaveBlock1Ptr->trainerHill.hasLost)
+    // {
+    //     // The player lost their last match.
+    //     gSaveBlock1Ptr->trainerHill.hasLost = FALSE;
+    //     gSpecialVar_Result = TRAINER_HILL_PLAYER_STATUS_LOST;
+    // }
+    // else if (gSaveBlock1Ptr->trainerHill.maybeECardScanDuringChallenge)
+    // {
+    //     // Unreachable code. Something relating to eCards?
+    //     gSaveBlock1Ptr->trainerHill.maybeECardScanDuringChallenge = 0;
+    //     gSpecialVar_Result = TRAINER_HILL_PLAYER_STATUS_ECARD_SCANNED;
+    // }
+    // else
+    // {
+    //     // Continue playing.
+    //     gSpecialVar_Result = TRAINER_HILL_PLAYER_STATUS_NORMAL;
+    // }
 }
 
 static void BufferChallengeTime(void)
 {
-    s32 total, minutes, secondsWhole, secondsFraction;
+    // s32 total, minutes, secondsWhole, secondsFraction;
 
-    total = gSaveBlock1Ptr->trainerHill.timer;
-    if (total >= HILL_MAX_TIME)
-        total = HILL_MAX_TIME;
+    // total = gSaveBlock1Ptr->trainerHill.timer;
+    // if (total >= HILL_MAX_TIME)
+    //     total = HILL_MAX_TIME;
 
-    minutes = total / (60 * 60);
-    total %= (60 * 60);
-    secondsWhole = total / 60;
-    total %= 60;
-    secondsFraction = (total * 168) / 100;
+    // minutes = total / (60 * 60);
+    // total %= (60 * 60);
+    // secondsWhole = total / 60;
+    // total %= 60;
+    // secondsFraction = (total * 168) / 100;
 
-    ConvertIntToDecimalStringN(gStringVar1, minutes, STR_CONV_MODE_RIGHT_ALIGN, 2);
-    ConvertIntToDecimalStringN(gStringVar2, secondsWhole, STR_CONV_MODE_RIGHT_ALIGN, 2);
-    ConvertIntToDecimalStringN(gStringVar3, secondsFraction, STR_CONV_MODE_LEADING_ZEROS, 2);
+    // ConvertIntToDecimalStringN(gStringVar1, minutes, STR_CONV_MODE_RIGHT_ALIGN, 2);
+    // ConvertIntToDecimalStringN(gStringVar2, secondsWhole, STR_CONV_MODE_RIGHT_ALIGN, 2);
+ //   ConvertIntToDecimalStringN(gStringVar3, secondsFraction, STR_CONV_MODE_LEADING_ZEROS, 2);
 }
 
 // Returns TRUE if all 4 floors are used
@@ -528,47 +528,47 @@ static void BufferChallengeTime(void)
 // The only time fewer than all 4 floors are used is for the JP-exclusive E-Reader and Default modes
 static void GetAllFloorsUsed(void)
 {
-    SetUpDataStruct();
-    if (sHillData->tag.numFloors != NUM_TRAINER_HILL_FLOORS)
-    {
-        ConvertIntToDecimalStringN(gStringVar1, sHillData->tag.numFloors, STR_CONV_MODE_LEFT_ALIGN, 1);
-        gSpecialVar_Result = FALSE;
-    }
-    else
-    {
-        gSpecialVar_Result = TRUE;
-    }
+    // SetUpDataStruct();
+    // if (sHillData->tag.numFloors != NUM_TRAINER_HILL_FLOORS)
+    // {
+    //     ConvertIntToDecimalStringN(gStringVar1, sHillData->tag.numFloors, STR_CONV_MODE_LEFT_ALIGN, 1);
+    //     gSpecialVar_Result = FALSE;
+    // }
+    // else
+    // {
+    //     gSpecialVar_Result = TRUE;
+    // }
 
-    FreeDataStruct();
+    // FreeDataStruct();
 }
 
 // May have been dummied. Every time this is called a conditional for var result occurs afterwards
 // Relation to E-Reader is an assumption, most dummied Trainer Hill code seems to be JP E-Reader mode related
 static void GetInEReaderMode(void)
 {
-    SetUpDataStruct();
-    gSpecialVar_Result = FALSE;
-    FreeDataStruct();
+    // SetUpDataStruct();
+    // gSpecialVar_Result = FALSE;
+    // FreeDataStruct();
 }
 
 bool8 InTrainerHillChallenge(void)
 {
-    if (VarGet(VAR_TRAINER_HILL_IS_ACTIVE) == 0)
-        return FALSE;
-    else if (gSaveBlock1Ptr->trainerHill.spokeToOwner)
-        return FALSE;
-    else if (GetCurrentTrainerHillMapId() != 0)
-        return TRUE;
-    else
-        return FALSE;
+    // if (VarGet(VAR_TRAINER_HILL_IS_ACTIVE) == 0)
+    //     return FALSE;
+    // else if (gSaveBlock1Ptr->trainerHill.spokeToOwner)
+    //     return FALSE;
+    // else if (GetCurrentTrainerHillMapId() != 0)
+    //     return TRUE;
+    // else
+    //     return FALSE;
 }
 
 static void IsTrainerHillChallengeActive(void)
 {
-    if (!InTrainerHillChallenge())
-        gSpecialVar_Result = FALSE;
-    else
-        gSpecialVar_Result = TRUE;
+    // if (!InTrainerHillChallenge())
+    //     gSpecialVar_Result = FALSE;
+    // else
+    //     gSpecialVar_Result = TRUE;
 }
 
 static void TrainerHillDummy_Unused(void)
@@ -583,37 +583,37 @@ static void TrainerHillDummy(void)
 
 void PrintOnTrainerHillRecordsWindow(void)
 {
-    s32 i, x, y;
-    u32 total, minutes, secondsWhole, secondsFraction;
+    // s32 i, x, y;
+    // u32 total, minutes, secondsWhole, secondsFraction;
 
-    SetUpDataStruct();
-    FillWindowPixelBuffer(0, PIXEL_FILL(0));
-    x = GetStringCenterAlignXOffset(FONT_NORMAL, gText_TimeBoard, 0xD0);
-    AddTextPrinterParameterized3(0, FONT_NORMAL, x, 2, sRecordWinColors, TEXT_SKIP_DRAW, gText_TimeBoard);
+    // SetUpDataStruct();
+    // FillWindowPixelBuffer(0, PIXEL_FILL(0));
+    // x = GetStringCenterAlignXOffset(FONT_NORMAL, gText_TimeBoard, 0xD0);
+    // AddTextPrinterParameterized3(0, FONT_NORMAL, x, 2, sRecordWinColors, TEXT_SKIP_DRAW, gText_TimeBoard);
 
-    y = 18;
-    for (i = 0; i < 4; i++)
-    {
-        AddTextPrinterParameterized3(0, FONT_NORMAL, 0, y, sRecordWinColors, TEXT_SKIP_DRAW, sTagMatchStrings[i]);
-        y += 15;
-        total = GetTimerValue(&gSaveBlock1Ptr->trainerHillTimes[i]);
-        minutes = total / (60 * 60);
-        total %= (60 * 60);
-        ConvertIntToDecimalStringN(gStringVar1, minutes, STR_CONV_MODE_RIGHT_ALIGN, 2);
-        secondsWhole = total / 60;
-        total %= 60;
-        ConvertIntToDecimalStringN(gStringVar2, secondsWhole, STR_CONV_MODE_RIGHT_ALIGN, 2);
-        secondsFraction = (total * 168) / 100;
-        ConvertIntToDecimalStringN(gStringVar3, secondsFraction, STR_CONV_MODE_LEADING_ZEROS, 2);
-        StringExpandPlaceholders(StringCopy(gStringVar4, gText_TimeCleared), gText_XMinYDotZSec);
-        x = GetStringRightAlignXOffset(FONT_NORMAL, gStringVar4, 0xD0);
-        AddTextPrinterParameterized3(0, FONT_NORMAL, x, y, sRecordWinColors, TEXT_SKIP_DRAW, gStringVar4);
-        y += 17;
-    }
+    // y = 18;
+    // for (i = 0; i < 4; i++)
+    // {
+    //     AddTextPrinterParameterized3(0, FONT_NORMAL, 0, y, sRecordWinColors, TEXT_SKIP_DRAW, sTagMatchStrings[i]);
+    //     y += 15;
+    //     total = GetTimerValue(&gSaveBlock1Ptr->trainerHillTimes[i]);
+    //     minutes = total / (60 * 60);
+    //     total %= (60 * 60);
+    //     ConvertIntToDecimalStringN(gStringVar1, minutes, STR_CONV_MODE_RIGHT_ALIGN, 2);
+    //     secondsWhole = total / 60;
+    //     total %= 60;
+    //     ConvertIntToDecimalStringN(gStringVar2, secondsWhole, STR_CONV_MODE_RIGHT_ALIGN, 2);
+    //     secondsFraction = (total * 168) / 100;
+    //     ConvertIntToDecimalStringN(gStringVar3, secondsFraction, STR_CONV_MODE_LEADING_ZEROS, 2);
+    //     StringExpandPlaceholders(StringCopy(gStringVar4, gText_TimeCleared), gText_XMinYDotZSec);
+    //     x = GetStringRightAlignXOffset(FONT_NORMAL, gStringVar4, 0xD0);
+    //     AddTextPrinterParameterized3(0, FONT_NORMAL, x, y, sRecordWinColors, TEXT_SKIP_DRAW, gStringVar4);
+    //     y += 17;
+    // }
 
-    PutWindowTilemap(0);
-    CopyWindowToVram(0, COPYWIN_FULL);
-    FreeDataStruct();
+    // PutWindowTilemap(0);
+    // CopyWindowToVram(0, COPYWIN_FULL);
+    // FreeDataStruct();
 }
 
 // Leftover from Fire Red / Leaf Green as in these games,
@@ -630,42 +630,42 @@ static void SetTimerValue(u32 *dst, u32 val)
 
 void LoadTrainerHillObjectEventTemplates(void)
 {
-    u8 i, floorId;
-    struct ObjectEventTemplate *eventTemplates = gSaveBlock1Ptr->objectEventTemplates;
+    // u8 i, floorId;
+    // struct ObjectEventTemplate *eventTemplates = gSaveBlock1Ptr->objectEventTemplates;
 
-    if (!LoadTrainerHillFloorObjectEventScripts())
-        return;
+    // if (!LoadTrainerHillFloorObjectEventScripts())
+    //     return;
 
-    SetUpDataStruct();
-    for (i = 0; i < 2; i++)
-        gSaveBlock2Ptr->frontier.trainerIds[i] = 0xFFFF;
-    CpuFill32(0, gSaveBlock1Ptr->objectEventTemplates, sizeof(gSaveBlock1Ptr->objectEventTemplates));
+    // SetUpDataStruct();
+    // for (i = 0; i < 2; i++)
+    //     gSaveBlock2Ptr->frontier.trainerIds[i] = 0xFFFF;
+    // CpuFill32(0, gSaveBlock1Ptr->objectEventTemplates, sizeof(gSaveBlock1Ptr->objectEventTemplates));
 
-    floorId = GetFloorId();
-    for (i = 0; i < 2; i++)
-    {
-        u8 bits;
+    // floorId = GetFloorId();
+    // for (i = 0; i < 2; i++)
+    // {
+    //     u8 bits;
 
-        eventTemplates[i] = sTrainerObjectEventTemplate;
-        eventTemplates[i].localId = i + 1;
-        eventTemplates[i].graphicsId = FacilityClassToGraphicsId(sHillData->floors[floorId].trainers[i].facilityClass);
-        eventTemplates[i].x = sHillData->floors[floorId].display.coords[i] & 0xF;
-        eventTemplates[i].y = ((sHillData->floors[floorId].display.coords[i] >> 4) & 0xF) + 5;
-        bits = i << 2;
-        eventTemplates[i].movementType = ((sHillData->floors[floorId].display.direction >> bits) & 0xF) + MOVEMENT_TYPE_FACE_UP;
-        eventTemplates[i].trainerRange_berryTreeId = (sHillData->floors[floorId].display.range >> bits) & 0xF;
-        eventTemplates[i].script = TrainerHill_EventScript_TrainerBattle;
-        gSaveBlock2Ptr->frontier.trainerIds[i] = i + 1;
-    }
+    //     eventTemplates[i] = sTrainerObjectEventTemplate;
+    //     eventTemplates[i].localId = i + 1;
+    //     eventTemplates[i].graphicsId = FacilityClassToGraphicsId(sHillData->floors[floorId].trainers[i].facilityClass);
+    //     eventTemplates[i].x = sHillData->floors[floorId].display.coords[i] & 0xF;
+    //     eventTemplates[i].y = ((sHillData->floors[floorId].display.coords[i] >> 4) & 0xF) + 5;
+    //     bits = i << 2;
+    //     eventTemplates[i].movementType = ((sHillData->floors[floorId].display.direction >> bits) & 0xF) + MOVEMENT_TYPE_FACE_UP;
+    //     eventTemplates[i].trainerRange_berryTreeId = (sHillData->floors[floorId].display.range >> bits) & 0xF;
+    //     eventTemplates[i].script = TrainerHill_EventScript_TrainerBattle;
+    //     gSaveBlock2Ptr->frontier.trainerIds[i] = i + 1;
+    // }
 
-    FreeDataStruct();
+    // FreeDataStruct();
 }
 
 bool32 LoadTrainerHillFloorObjectEventScripts(void)
 {
-    SetUpDataStruct();
-    // Something may have been dummied here
-    FreeDataStruct();
+    // SetUpDataStruct();
+    // // Something may have been dummied here
+    // FreeDataStruct();
     return TRUE;
 }
 
@@ -983,16 +983,16 @@ bool32 OnTrainerHillEReaderChallengeFloor(void)
 
 static void GetChallengeWon(void)
 {
-    if (gSaveBlock1Ptr->trainerHill.hasLost)
-        gSpecialVar_Result = FALSE;
-    else
-        gSpecialVar_Result = TRUE;
+    // if (gSaveBlock1Ptr->trainerHill.hasLost)
+    //     gSpecialVar_Result = FALSE;
+    // else
+    //     gSpecialVar_Result = TRUE;
 }
 
 static void TrainerHillSetTag(void)
 {
-    gSaveBlock1Ptr->trainerHill.tag = gSpecialVar_0x8005;
-    gSaveBlock1Ptr->trainerHill.bestTime = gSaveBlock1Ptr->trainerHillTimes[gSpecialVar_0x8005];
+    // gSaveBlock1Ptr->trainerHill.tag = gSpecialVar_0x8005;
+    // gSaveBlock1Ptr->trainerHill.bestTime = gSaveBlock1Ptr->trainerHillTimes[gSpecialVar_0x8005];
 }
 
 static u8 GetPrizeListId(bool8 maxTrainers)
@@ -1018,40 +1018,41 @@ static u8 GetPrizeListId(bool8 maxTrainers)
 
 static u16 GetPrizeItemId(void)
 {
-    u8 i;
-    const u16 *prizeList;
-    s32 var = 0, prizeListSetId, minutes, id;
+    // u8 i;
+    // const u16 *prizeList;
+    // s32 var = 0, prizeListSetId, minutes, id;
 
-    for (i = 0; i < NUM_TRAINER_HILL_FLOORS; i++)
-    {
-        var += sHillData->floors[i].trainerNum1;
-        var += sHillData->floors[i].trainerNum2;
-    }
+    // for (i = 0; i < NUM_TRAINER_HILL_FLOORS; i++)
+    // {
+    //     var += sHillData->floors[i].trainerNum1;
+    //     var += sHillData->floors[i].trainerNum2;
+    // }
 
-    prizeListSetId = var / 256;
-    prizeListSetId %= 2;
-    if (FlagGet(FLAG_SYS_GAME_CLEAR) && sHillData->tag.numTrainers == NUM_TRAINER_HILL_TRAINERS)
-        i = GetPrizeListId(TRUE);
-    else
-        i = GetPrizeListId(FALSE);
+    // prizeListSetId = var / 256;
+    // prizeListSetId %= 2;
+    // if (FlagGet(FLAG_SYS_GAME_CLEAR) && sHillData->tag.numTrainers == NUM_TRAINER_HILL_TRAINERS)
+    //     i = GetPrizeListId(TRUE);
+    // else
+    //     i = GetPrizeListId(FALSE);
 
-    if (gSaveBlock1Ptr->trainerHill.tag == HILL_TAG_EXPERT)
-        i = (i + 1) % NUM_TRAINER_HILL_PRIZE_LISTS;
+    // if (gSaveBlock1Ptr->trainerHill.tag == HILL_TAG_EXPERT)
+    //     i = (i + 1) % NUM_TRAINER_HILL_PRIZE_LISTS;
 
-    prizeList = sPrizeListSets[prizeListSetId][i];
-    minutes = (signed)(gSaveBlock1Ptr->trainerHill.timer) / (60 * 60);
-    if (minutes < 12)
-        id = 0;
-    else if (minutes < 13)
-        id = 1;
-    else if (minutes < 14)
-        id = 2;
-    else if (minutes < 16)
-        id = 3;
-    else if (minutes < 18)
-        id = 4;
-    else
-        id = 5;
+    // prizeList = sPrizeListSets[prizeListSetId][i];
+    // minutes = (signed)(gSaveBlock1Ptr->trainerHill.timer) / (60 * 60);
+    // if (minutes < 12)
+    //     id = 0;
+    // else if (minutes < 13)
+    //     id = 1;
+    // else if (minutes < 14)
+    //     id = 2;
+    // else if (minutes < 16)
+    //     id = 3;
+    // else if (minutes < 18)
+    //     id = 4;
+    // else
+    //     id = 5;
 
-    return prizeList[id];
+    // return prizeList[id];
+    return 0;
 }

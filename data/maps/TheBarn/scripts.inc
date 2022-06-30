@@ -51,6 +51,24 @@ TheBarn_MapScripts::
 		release
 		end
 
+	TheBarn_EventScript_SwitchParty::
+		lock
+		faceplayer
+		msgbox TheBarn_Text_SwitchParty, MSGBOX_NPC
+		special SwitchToOffParty
+		goto_if_set FLAG_FIRST_PARTY_SWITCH, TheBarn_EventScript_FinishPartySwitch
+		setflag FLAG_FIRST_PARTY_SWITCH
+		msgbox TheBarn_Text_GiveWeedle, MSGBOX_NPC
+		givemon SPECIES_WEEDLE, 5
+		goto TheBarn_EventScript_FinishPartySwitch
+	
+	TheBarn_EventScript_FinishPartySwitch::
+		msgbox TheBarn_Text_SwitchPartyDone, MSGBOX_NPC
+		release
+		end
+	
+
+
 	TheBarn_Text_Reset_To_1:
 		.string "IVs at level one.$"
 
@@ -67,3 +85,18 @@ TheBarn_MapScripts::
 	TheBarn_Text_Change_To_Daycare:
 		.string "Current DaycareVal: {STR_VAR_1}\n"
 		.string "Active Daycare: Daycare.$"
+
+	TheBarn_Text_SwitchParty:
+		.string "Oh you want to switch parties?$"
+	
+	TheBarn_Text_GiveWeedle:
+		.string "Oh you switched for the 1st time.\n"
+		.string "Better take this pokemon.$"
+
+	TheBarn_Text_SwitchPartyDone:
+		.string "Better take this pokemon.$"
+
+
+	
+
+		

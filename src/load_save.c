@@ -177,6 +177,24 @@ void LoadPlayerParty(void)
         gPlayerParty[i] = gSaveBlock1Ptr->playerParty[i];
 }
 
+void SwitchToOffParty(void){
+    u8 tempPartyCount;
+    struct Pokemon tempParty[PARTY_SIZE];
+    int i;
+
+    tempPartyCount = gPlayerPartyCount;
+    gPlayerPartyCount = gSaveBlock1Ptr->offPartyCount;
+    gSaveBlock1Ptr->offPartyCount = tempPartyCount;
+
+    for (i = 0; i < PARTY_SIZE; i++){
+        tempParty[i] = gPlayerParty[i];
+        gPlayerParty[i] = gSaveBlock1Ptr->offParty[i];
+        gSaveBlock1Ptr->offParty[i] = tempParty[i];
+
+    }
+        
+}
+
 void SaveObjectEvents(void)
 {
     int i;
