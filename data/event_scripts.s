@@ -1060,3 +1060,5 @@ Common_EventScript_LegendaryFlewAway::
 	.include "data/maps/Ranch_TestArea/scripts.inc"
 
 	.include "data/maps/TheBarn/scripts.inc"
+
+	.include "data/maps/Manu_Ranch/scripts.inc"

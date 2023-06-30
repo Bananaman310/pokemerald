@@ -1853,6 +1853,18 @@ static const struct SpriteFrameImage sPicTable_Azumarill[] = {
     overworld_frame(gObjectEventPic_Azumarill, 2, 2, 2),
 };
 
+static const struct SpriteFrameImage sPicTable_Miltank[] = {
+    overworld_frame(gObjectEventPic_Miltank, 2, 2, 0),
+    overworld_frame(gObjectEventPic_Miltank, 2, 2, 1),
+    overworld_frame(gObjectEventPic_Miltank, 2, 2, 2),
+    overworld_frame(gObjectEventPic_Miltank, 2, 2, 0),
+    overworld_frame(gObjectEventPic_Miltank, 2, 2, 0),
+    overworld_frame(gObjectEventPic_Miltank, 2, 2, 1),
+    overworld_frame(gObjectEventPic_Miltank, 2, 2, 1),
+    overworld_frame(gObjectEventPic_Miltank, 2, 2, 2),
+    overworld_frame(gObjectEventPic_Miltank, 2, 2, 2),
+};
+
 static const struct SpriteFrameImage sPicTable_Wingull[] = {
     overworld_frame(gObjectEventPic_Wingull, 2, 2, 0),
     overworld_frame(gObjectEventPic_Wingull, 2, 2, 2),
